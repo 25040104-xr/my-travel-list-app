@@ -1,8 +1,4 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="Departures / Packing" width="100%" />
-</p>
-
-<p align="center">
   <b>A travel packing list that looks like an airport departure board.</b><br/>
   Add what you need. Tick it off. Watch it flip from <code>WAITING</code> to <code>BOARDED</code>.
 </p>
