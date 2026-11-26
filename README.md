@@ -1,70 +1,128 @@
-# Getting Started with Create React App
+<p align="center">
+  <img src="assets/banner.svg" alt="Departures / Packing" width="100%" />
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <b>A travel packing list that looks like an airport departure board.</b><br/>
+  Add what you need. Tick it off. Watch it flip from <code>WAITING</code> to <code>BOARDED</code>.
+</p>
 
-## Available Scripts
+<p align="center">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+  <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" />
+</p>
 
-In the project directory, you can run:
+<p align="center">
+  <a href="https://YOUR-APP.vercel.app"><img src="https://img.shields.io/badge/%E2%9C%88%EF%B8%8F_TRY_THE_LIVE_APP-F5C518?style=for-the-badge&logoColor=black" alt="Try the live app" /></a>
+</p>
 
-### `npm start`
+<br/>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<table align="center">
+  <tr>
+    <td align="center"><img src="public/screenshot.png" alt="Desktop view" width="620" /></td>
+    <td align="center"><img src="public/mobile.png" alt="Mobile view" width="190" /></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Desktop</sub></td>
+    <td align="center"><sub>Mobile</sub></td>
+  </tr>
+</table>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## ✨ Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| | Feature | What it does |
+|:-:|---|---|
+| 🛫 | **Split-flap board** | Every item is shown as letter tiles, like a real airport board |
+| 🔄 | **Flip animation** | Tick an item and its tiles flip from yellow `WAITING` to green `BOARDED` |
+| ➕ | **Add with quantity** | Pick how many (01–20) and type the item |
+| 🔍 | **Search** | Find any item as you type |
+| ↕️ | **Sort** | By order added, A–Z, waiting first, or quantity |
+| 🗑️ | **Delete or clear** | Remove one item, or clear the whole board (with a confirm check) |
+| ✈️ | **Flight-path stats** | A plane flies across the footer as your packed % goes up |
+| 🟢 | **Ready for takeoff** | Everything turns green when you reach 100% |
+| 💾 | **Saved list** | Your items are still there after you refresh |
+| 🕒 | **Live clock** | The header shows the current time, like the board at the gate |
+| 📱 | **Mobile friendly** | On phones, the status moves under each item so nothing gets squashed |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 💭 Why a departure board?
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+> A packing list is really a countdown to a trip.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+So instead of a plain checklist, every item becomes a *flight* waiting to board. Packing turns into a small moment: tick it, and the tiles flip.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🧩 How it's built
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+App                    state + add / toggle / delete / clear handlers
+├── Logo               title and live clock
+├── Form               quantity + item input, resets after adding
+├── PackingList        search, sort and clear board
+│   └── Item           checkbox, tiles and delete button
+│       └── SplitFlap  turns text into flipping tiles
+└── Stats              packed count, % and the flying plane
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+<details>
+<summary><b>🔧 How the flip effect works</b></summary>
+<br/>
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Each tile gets a React `key` that includes the item's packed status:
 
-## Learn More
+```jsx
+<span key={`${flipKey}-${i}`} className="flap" style={{ animationDelay: `${i * 0.03}s` }}>
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+When the status changes, the key changes, so React remounts every tile and the CSS `@keyframes flip` animation plays again. The small `animationDelay` makes the letters flip one after another, left to right.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+</details>
 
-### Code Splitting
+<details>
+<summary><b>📦 How state and props flow</b></summary>
+<br/>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- All items live in **one `useState`** in `App`.
+- `App` passes the handlers down as **props**: `onAddItem` to `Form`; `onToggleItem`, `onDeleteItem` and `onClearList` to `PackingList` and `Item`.
+- **Search and sort** are worked out from the list on every render, so the saved list itself never changes order.
+- **`useEffect`** saves the list to `localStorage` and keeps the clock ticking.
 
-### Analyzing the Bundle Size
+</details>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 🛠️ Built with
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+| Area | Tools |
+|---|---|
+| **Framework** | React (Create React App) |
+| **Hooks** | `useState`, `useEffect` |
+| **Styling** | Plain CSS with Grid, Flexbox and `@keyframes` |
+| **Fonts** | Oswald and Space Mono |
+| **Hosting** | Vercel |
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 🚀 Run it locally
 
-### Deployment
+```bash
+git clone https://github.com/YOUR-USERNAME/my-travel-list-app.git
+cd my-travel-list-app
+npm install
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Then open **http://localhost:3000**.
 
-### `npm run build` fails to minify
+<br/>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<p align="center">
+  <sub>✈️ Built as a school React project · Pack light, travel far.</sub>
+</p>
