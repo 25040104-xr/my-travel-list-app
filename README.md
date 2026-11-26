@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="https://YOUR-APP.vercel.app"><img src="https://img.shields.io/badge/%E2%9C%88%EF%B8%8F_TRY_THE_LIVE_APP-F5C518?style=for-the-badge&logoColor=black" alt="Try the live app" /></a>
+  <a href="https://my-travel-list-app.vercel.app/"><img src="https://img.shields.io/badge/%E2%9C%88%EF%B8%8F_TRY_THE_LIVE_APP-F5C518?style=for-the-badge&logoColor=black" alt="Try the live app" /></a>
 </p>
 
 <br/>
